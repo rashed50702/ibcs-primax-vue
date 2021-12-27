@@ -176,7 +176,11 @@
                     cart_items: this.productsInCart,
                   }
                   
-        await axios.post('orders', data)
+        if (!data.cart_items.length) {
+          this.$toast.error("Your Cart is empty!");
+          return false;
+        }
+        await axios.post(`${config.baseURL}/api/orders`, data)
         .then(response => {
           // console.log(response.data.message);
             this.$toast.success(response.data.message);
@@ -218,4 +222,13 @@
       font-weight: bold;
       width: 75%
   }
+
+  .modal-dialog .close{
+    border: none !important;
+    background: #fff !important;
+  }
+  /*[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled){
+    border: none !important;
+    background: #fff !important;
+  }*/
 </style>

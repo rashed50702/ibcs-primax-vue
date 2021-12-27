@@ -8,6 +8,30 @@
         <router-link
           class="nav-item nav-link"
           v-if="!isLoggedIn"
+          :to="{ name: 'Products' }"
+        >
+          Products
+        </router-link>
+
+        <router-link
+          class="nav-item nav-link"
+          v-if="!isLoggedIn"
+          :to="{ name: 'Orders' }"
+        >
+          Orders
+        </router-link>
+
+        <router-link
+          class="nav-item nav-link"
+          v-if="!isLoggedIn"
+          :to="{ name: 'OrderDeliveries' }"
+        >
+          Order Deliveries
+        </router-link>
+
+        <router-link
+          class="nav-item nav-link"
+          v-if="!isLoggedIn"
           :to="{ name: 'Login' }"
         >
           Login

@@ -6,9 +6,9 @@ import axios from 'axios'
 import store from 'vuex'
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
+import "@/assets/global.css"
 
-import 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
+
 
 const options = {
   draggable: false

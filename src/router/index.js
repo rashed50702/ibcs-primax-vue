@@ -4,6 +4,11 @@ import Home from '../views/Home.vue'
 import Login from "../views/Login.vue"
 import SignUp from "../views/SignUp.vue"
 import Dashboard from "../views/Dashboard.vue"
+import Products from "../views/Products.vue"
+import ProductCreate from "../views/ProductCreate.vue"
+import ProductEdit from "../views/ProductEdit.vue"
+import Orders from "../views/Orders.vue"
+import OrderDeliveries from "../views/OrderDeliveries.vue"
 
 Vue.use(VueRouter)
 
@@ -32,13 +37,35 @@ const routes = [
     meta: { authOnly: true }
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: "/products",
+    name: "Products",
+    component: Products,
+    meta: { guestOnly: true }
+  },
+  {
+    path: '/products/create',
+    name: 'ProductCreate',
+    component: ProductCreate,
+    meta: { guestOnly: true }
+  },
+  {
+    path: '/products/:id/edit',
+    name: 'ProductEdit',
+    component: ProductEdit,
+    meta: { guestOnly: true }
+  },
+  {
+    path: '/orders',
+    name: 'Orders',
+    component: Orders,
+    meta: { guestOnly: true }
+  },
+  {
+    path: '/delivered-orders',
+    name: 'OrderDeliveries',
+    component: OrderDeliveries,
+    meta: { guestOnly: true }
+  },
 ]
 
 const router = new VueRouter({
