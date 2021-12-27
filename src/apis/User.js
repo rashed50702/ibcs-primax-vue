@@ -13,6 +13,10 @@ export default {
     return Api().post("/logout");
   },
 
+  newOrdersCounter() {
+    return Api().get("/new-orders-count");
+  },
+
   auth() {
     return Api().get("/user");
   }

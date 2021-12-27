@@ -18,7 +18,7 @@
           v-if="!isLoggedIn"
           :to="{ name: 'Orders' }"
         >
-          Orders
+          Orders <span class="badge badge-success" v-if="newOrderNum > 0">{{newOrderNum}}</span>
         </router-link>
 
         <router-link
@@ -63,7 +63,8 @@ import User from "../apis/User";
 export default {
   data() {
     return {
-      isLoggedIn: false
+      isLoggedIn: false,
+      newOrderNum: 0,
     };
   },
 
@@ -73,6 +74,8 @@ export default {
     });
 
     this.isLoggedIn = !!localStorage.getItem("token");
+    // console.log("Ok");
+    this.newOrdersCount();
   },
 
   methods: {
@@ -81,6 +84,12 @@ export default {
         localStorage.removeItem("token");
         this.isLoggedIn = false;
         this.$router.push({ name: "Home" });
+      });
+    },
+    async newOrdersCount(){
+      await User.newOrdersCounter().then(response => {
+        this.newOrderNum = response.data;
+        // console.log(response.data);
       });
     }
   }

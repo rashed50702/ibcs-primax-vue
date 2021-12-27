@@ -7,6 +7,7 @@ import store from 'vuex'
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
 import "@/assets/global.css"
+import {func} from './func.js'
 
 
 
@@ -16,6 +17,15 @@ const options = {
 
 Vue.use(Toast, options);
 
+Vue.prototype.$func = func
+
+Vue.mixin({
+  methods: {
+    globalHelper: function () {
+      alert("Hello world")
+    },
+  },
+})
 
 Vue.config.productionTip = false
 
