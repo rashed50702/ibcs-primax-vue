@@ -52,7 +52,7 @@
 
 <script>
   import axios from 'axios'
-  import config from './config'
+  import config from '@/config'
 
   // this is must have
   import { library } from '@fortawesome/fontawesome-svg-core';
@@ -71,7 +71,7 @@
     data(){
       return {
         products: [],
-        image_src: `${config.baseURL}/images/products`
+        image_src: `${config.apiURL}/images/products`
       }
     },
     async created(){
@@ -79,13 +79,13 @@
     },
     methods:{
       async loadProducts(){
-        const response = await axios.get(`${config.baseURL}/api/products`);
+        const response = await axios.get(`${config.apiURL}/api/products`);
         this.products = response.data;
       },
 
       async  handleDelete(id){
         if(confirm("Do you really want to delete?")){
-            await axios.delete(`${config.baseURL}/api/products/`+id);
+            await axios.delete(`${config.apiURL}/api/products/`+id);
             this.$toast.success("Deleted successfully");
             this.loadProducts();
         }

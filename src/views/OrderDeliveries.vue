@@ -49,7 +49,7 @@
 
 <script>
   import axios from 'axios'
-  import config from './config'
+  import config from '@/config'
   import moment from 'moment'
 
 
@@ -80,13 +80,13 @@
     },
     methods:{
       async loadOrderDeliveries(){
-        const response = await axios.get(`${config.baseURL}/api/order-deliveries`);
+        const response = await axios.get(`${config.apiURL}/api/order-deliveries`);
         this.orders = response.data;
       },
 
       async handleDelete(id){
           if(confirm("Do you really want to delete?")){
-            await axios.delete(`${config.baseURL}/api/order-deliveries/`+id);
+            await axios.delete(`${config.apiURL}/api/order-deliveries/`+id);
               this.$toast.success("Deleted successfully");
               this.loadOrderDeliveries();
           }

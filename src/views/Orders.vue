@@ -79,7 +79,7 @@
 
 <script>
   import axios from 'axios'
-  import config from './config'
+  import config from '@/config'
   import moment from 'moment'
 
 
@@ -113,7 +113,7 @@
     },
     methods:{
       async loadOrders(){
-        const response = await axios.get(`${config.baseURL}/api/orders`);
+        const response = await axios.get(`${config.apiURL}/api/orders`);
         this.orders = response.data;
       },
 
@@ -131,7 +131,7 @@
           new_status: this.editStatus,
         }
 
-        await axios.post(`${config.baseURL}/api/change-order-status`, data)
+        await axios.post(`${config.apiURL}/api/change-order-status`, data)
         .then(response => {
           // console.log(response);
           this.$toast.success(response.data.message);
@@ -145,7 +145,7 @@
 
         async handleDelete(id){
           if(confirm("Do you really want to delete?")){
-            await axios.delete(`${config.baseURL}/api/orders/`+id);
+            await axios.delete(`${config.apiURL}/api/orders/`+id);
               this.$toast.success("Deleted successfully");
               this.loadOrders();
           }

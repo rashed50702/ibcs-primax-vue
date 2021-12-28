@@ -42,7 +42,7 @@
 
 <script>
 	import axios from 'axios'
-	import config from './config'
+	import config from '@/config'
 
 	export default{
 		data(){
@@ -58,7 +58,7 @@
 			}
 		},
 		async created(){
-		    const response = await axios.get(`${config.baseURL}/api/products/` + this.id);
+		    const response = await axios.get(`${config.apiURL}/api/products/` + this.id);
 		    this.product = response.data;
 		},
 		methods: {
@@ -76,7 +76,7 @@
 				data.append('image', this.image);
 				data.append('_method', 'PUT');
 
-			  await axios.post(`${config.baseURL}/api/products/` + this.id, data)
+			  await axios.post(`${config.apiURL}/api/products/` + this.id, data)
 			  	.then(response => {
 			  		this.$toast.success(response.data.message);
 			    }).catch(error => {

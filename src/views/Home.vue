@@ -95,7 +95,7 @@
   import { BootstrapVue } from 'bootstrap-vue'
   import axios from 'axios'
   import BaseApi from '../apis/Api'
-  import config from './config'
+  import config from '@/config'
   import User from "../apis/User";
 
 
@@ -134,7 +134,7 @@
     data(){
       return {
         products: [],
-        image_src: `${config.baseURL}/images/products`,
+        image_src: `${config.apiURL}/images/products`,
         search: '',
         sortBy: 'highestprice',
         productsInCart: [],
@@ -153,7 +153,7 @@
     },
     methods:{
       async loadProducts(){
-        const response = await axios.get(`${config.baseURL}/api/products-for-sale`);
+        const response = await axios.get(`${config.apiURL}/api/products-for-sale`);
         this.products = response.data;
       },
 
@@ -192,7 +192,7 @@
           return false;
         }
 
-        await axios.post(`${config.baseURL}/api/orders`, data)
+        await axios.post(`${config.apiURL}/api/orders`, data)
         .then(response => {
           // console.log(response.data.message);
             this.$toast.success(response.data.message);

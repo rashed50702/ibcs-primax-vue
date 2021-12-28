@@ -42,7 +42,7 @@
 
 <script>
 	import axios from 'axios'
-	import config from './config'
+	import config from '@/config'
 
 	export default{
 		name: 'ProductCreate',
@@ -73,7 +73,7 @@
 				data.append('qty', this.qty);
 				data.append('image', this.image);
 
-      	await axios.post(`${config.baseURL}/api/products`, data)
+      	await axios.post(`${config.apiURL}/api/products`, data)
       		.then(response => {
       			this.$toast.success(response.data.message);
         		this.name = "";
