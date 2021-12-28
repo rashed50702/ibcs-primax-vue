@@ -9,6 +9,8 @@ import ProductCreate from "../views/ProductCreate.vue"
 import ProductEdit from "../views/ProductEdit.vue"
 import Orders from "../views/Orders.vue"
 import OrderDeliveries from "../views/OrderDeliveries.vue"
+import AccessDenied from "../views/AccessDenied.vue"
+import AccessTwoDenied from "../views/AccessTwoDenied.vue"
 
 Vue.use(VueRouter)
 
@@ -25,6 +27,18 @@ const routes = [
     meta: { guestOnly: true }
   },
   {
+    path: "/access-denied",
+    name: "AccessDenied",
+    component: AccessDenied,
+    meta: { authOnly: true }
+  },
+  {
+    path: "/access-two-denied",
+    name: "AccessTwoDenied",
+    component: AccessTwoDenied,
+    meta: { authOnly: true }
+  },
+  {
     path: "/sign-up",
     name: "SignUp",
     component: SignUp,
@@ -34,37 +48,37 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
-    meta: { authOnly: true }
+    meta: { authOnly: true, is_admin: 1}
   },
   {
     path: "/products",
     name: "Products",
     component: Products,
-    meta: { guestOnly: true }
+    meta: { authOnly: true}
   },
   {
     path: '/products/create',
     name: 'ProductCreate',
     component: ProductCreate,
-    meta: { guestOnly: true }
+    meta: { authOnly: true}
   },
   {
     path: '/products/:id/edit',
     name: 'ProductEdit',
     component: ProductEdit,
-    meta: { guestOnly: true }
+    meta: { authOnly: true}
   },
   {
     path: '/orders',
     name: 'Orders',
     component: Orders,
-    meta: { guestOnly: true }
+    meta: { authOnly: true}
   },
   {
     path: '/delivered-orders',
     name: 'OrderDeliveries',
     component: OrderDeliveries,
-    meta: { guestOnly: true }
+    meta: { authOnly: true}
   },
 ]
 
@@ -105,5 +119,42 @@ router.beforeEach((to, from, next) => {
     next(); // make sure to always call next()!
   }
 });
+
+// let is_admin = JSON.parse(localStorage.getItem('is_admin'))
+// Meta Handling
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some(record => record.meta.authOnly)) {
+//     if (localStorage.getItem('token') == null) {
+//       next({
+//         path: '/login',
+//         params: { nextUrl: to.fullPath }
+//       })
+//     } else {
+//       let is_admin = JSON.parse(localStorage.getItem('is_admin'))
+//       // console.log(is_admin);
+//       if (to.matched.some(record => record.meta.is_admin)) {
+//         if (is_admin == 1) {
+//           next()
+//         } else {
+//           next({
+//             path: "/access-denied",
+//             params: { nextUrl: to.fullPath }
+//           })
+//         }
+
+//       } else {
+//         next()
+//       }
+//     }
+//   } else if (to.matched.some(record => record.meta.guestOnly)) {
+//     if (localStorage.getItem('token') == null) {
+//       next()
+//     } else {
+//       next({ name: 'userboard2' })
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

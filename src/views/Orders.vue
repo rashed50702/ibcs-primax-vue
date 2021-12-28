@@ -39,7 +39,10 @@
                   <span v-if="order.status == 2" class="text-danger">Cancelled</span>
                 </td>
                 <td class="align-middle text-center">
-                  <a href="javascript:void(0)" class="btn btn-warning btn-sm mr-5" @click="showModal(order.id, order.status)">Edit</a>
+                  <a href="javascript:void(0)" class="btn btn-warning btn-sm mr-5"
+                    @click="showModal(order.id, order.status)"
+                    v-if="order.status !=1"
+                    >Edit</a>
                   <a href="javascript:void(0)" class="btn btn-danger btn-sm" @click="handleDelete(order.id)">Delete</a>
                 </td>
               </tr>
@@ -130,6 +133,7 @@
 
         await axios.post(`${config.baseURL}/api/change-order-status`, data)
         .then(response => {
+          // console.log(response);
           this.$toast.success(response.data.message);
           this.show = false;
           this.loadOrders();

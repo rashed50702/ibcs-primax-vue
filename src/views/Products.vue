@@ -4,7 +4,8 @@
       <div class="card">
         <div class="card-header">
           <div class="row">
-            <div class="col-sm-6"><h5>Product List</h5></div>
+            <div class="col-sm-6">
+              <h5>Product List</h5></div>
             <div class="col-sm-6" style="text-align:right;">
               <router-link class="btn btn-sm btn-primary" to="/products/create"><i class="fas fa-plus-square"></i> Create Product</router-link>
             </div>
@@ -36,7 +37,7 @@
                 </td>
                 <td class="align-middle text-center">
                   <router-link class="btn btn-warning btn-sm mr-5" :to="'/products/'+product.id+'/edit'">Edit</router-link>
-                  <a href="javascript:void(0)" class="btn btn-danger btn-sm" @click="handleDelete(product.id)">Delete</a>
+                  <a href="javascript:void(0)" class="btn btn-danger btn-sm mt-1" @click="handleDelete(product.id)">Delete</a>
                 </td>
               </tr>
             </tbody>
@@ -52,6 +53,16 @@
 <script>
   import axios from 'axios'
   import config from './config'
+
+  // this is must have
+  import { library } from '@fortawesome/fontawesome-svg-core';
+  // import { name of your icon in camelCase } from "@fortawesome/free-solid-svg-icons";
+  // For example, I want to use fa-enveloper-open-text, then it's faEnvelopeOpenText
+  import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
+  // Then add it to library
+  library.add(faEnvelopeOpenText)//<font-awesome-icon :icon="['fas', 'envelope-open-text']" />
+
+
 
   export default{
     computed:{

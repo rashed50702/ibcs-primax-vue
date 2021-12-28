@@ -8,7 +8,9 @@ import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
 import "@/assets/global.css"
 import {func} from './func.js'
-
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 
 const options = {
@@ -19,13 +21,10 @@ Vue.use(Toast, options);
 
 Vue.prototype.$func = func
 
-Vue.mixin({
-  methods: {
-    globalHelper: function () {
-      alert("Hello world")
-    },
-  },
-})
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+
 
 Vue.config.productionTip = false
 

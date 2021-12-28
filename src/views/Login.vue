@@ -23,6 +23,7 @@
           />
           <span class="text-danger" v-if="errors.password">{{ errors.password[0] }}</span>
         </div>
+
         <div class="form-group mt-3" style="text-align: right;">
           <button class="btn btn-success btn-sm"  @click.prevent="login">Login</button>
         </div>
@@ -51,8 +52,16 @@ export default {
       User.login(this.form)
         .then(response => {
           this.$root.$emit("login", true);
-          localStorage.setItem("token", response.data);
-          this.$router.push({ name: "Dashboard" });
+          // localStorage.setItem("token", response.data);
+          localStorage.setItem("token", response.data.textToken);
+          localStorage.setItem('is_admin',JSON.stringify(response.data.is_admin))
+          if (response.data.is_admin == 1) {
+            this.$router.push({ name: "Dashboard" });
+          }else{
+            this.$router.push({ name: "BuyerDashboard" });
+          }
+          // this.$router.push({ name: "Dashboard" });
+          // console.log(response.data);
         })
         .catch(error => {
           if (error.response.status === 422) {

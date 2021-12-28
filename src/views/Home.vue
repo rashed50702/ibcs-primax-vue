@@ -47,11 +47,11 @@
                   </div>
                   <div class="product-detail-container p-2">
                     <div class="d-flex justify-content-between">
-                      <h5 class="item-name">{{ product.name }}</h5>
+                      <h5 class="item-name">{{ product.name.substring(0,20) }}</h5>
                       <div class="d-flex flex-column mb-2"> <span class="new-price">${{ product.price }}</span></div>
                     </div>
                     <div class="d-flex justify-content-between pt-1">
-                      <p>{{ product.description }}</p>
+                      <p>{{ product.description.substring(0,65)+".." }}</p>
                     </div>
                     <button class="btn btn-success btn-sm" style="width:100%;" v-if="product.qty > 0" @click="addToCart(product)">Add To Cart</button>
                     <button class="btn btn-secondery btn-sm" style="width:100%;" v-else>Out Of Stock</button>
@@ -96,6 +96,8 @@
   import axios from 'axios'
   import BaseApi from '../apis/Api'
   import config from './config'
+  import User from "../apis/User";
+
 
   Vue.use(BootstrapVue)
 
@@ -126,7 +128,7 @@
         return this.productsInCart.reduce((accumulator , item) => {
           return accumulator  + item.pqty;
         }, 0);
-      }
+      },
     },
 
     data(){
@@ -140,10 +142,14 @@
         pname: '',
         pqty: 1,
         pprice: '',
+        user: null
       }
     },
     async created(){
       this.loadProducts();
+      User.auth().then(response => {
+        this.user = response.data;
+      });
     },
     methods:{
       async loadProducts(){
@@ -171,8 +177,13 @@
       },
 
       async submitOrder(){
+        if (!this.user) {
+          this.$toast.error("Login first to make an order!");
+          return false;
+        }
+        
         let data = {
-                    customer_id: 1,
+                    customer_id: this.user.id,
                     cart_items: this.productsInCart,
                   }
                   
@@ -180,6 +191,7 @@
           this.$toast.error("Your Cart is empty!");
           return false;
         }
+
         await axios.post(`${config.baseURL}/api/orders`, data)
         .then(response => {
           // console.log(response.data.message);

@@ -7,7 +7,15 @@
       <ul class="nav navbar-nav">
         <router-link
           class="nav-item nav-link"
-          v-if="!isLoggedIn"
+          v-if="isLoggedIn"
+          :to="{ name: 'Dashboard' }"
+        >
+          Dashboard
+        </router-link>
+        
+        <router-link
+          class="nav-item nav-link"
+          v-if="isLoggedIn && is_admin == 1"
           :to="{ name: 'Products' }"
         >
           Products
@@ -15,7 +23,7 @@
 
         <router-link
           class="nav-item nav-link"
-          v-if="!isLoggedIn"
+          v-if="isLoggedIn && is_admin == 1"
           :to="{ name: 'Orders' }"
         >
           Orders <span class="badge badge-success" v-if="newOrderNum > 0">{{newOrderNum}}</span>
@@ -23,7 +31,7 @@
 
         <router-link
           class="nav-item nav-link"
-          v-if="!isLoggedIn"
+          v-if="isLoggedIn && is_admin == 1"
           :to="{ name: 'OrderDeliveries' }"
         >
           Order Deliveries
@@ -43,13 +51,6 @@
         >
           SignUp
         </router-link>
-        <router-link
-          class="nav-item nav-link"
-          v-if="isLoggedIn"
-          :to="{ name: 'Dashboard' }"
-        >
-          Dashboard
-        </router-link>
 
         <a class="nav-item nav-link" href="#" v-if="isLoggedIn" @click.prevent="logout">Logout</a>
       </ul>
@@ -64,26 +65,37 @@ export default {
   data() {
     return {
       isLoggedIn: false,
+      is_admin: null,
       newOrderNum: 0,
+
     };
   },
 
   mounted() {
     this.$root.$on("login", () => {
       this.isLoggedIn = true;
+      // this.is_admin = localStorage.getItem("is_admin");
+      // console.log(this.is_admin);
+      location.reload();
     });
 
     this.isLoggedIn = !!localStorage.getItem("token");
-    // console.log("Ok");
+    this.is_admin = localStorage.getItem("is_admin");
+  
     this.newOrdersCount();
+
   },
 
   methods: {
+    
     logout() {
       User.logout().then(() => {
         localStorage.removeItem("token");
+        localStorage.removeItem("is_admin");
         this.isLoggedIn = false;
+        // this.is_admin = null;
         this.$router.push({ name: "Home" });
+        location.reload();
       });
     },
     async newOrdersCount(){

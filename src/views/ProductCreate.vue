@@ -55,7 +55,7 @@
 				price: '',
 				qty: '',
 				image: null,
-                errors: null
+        errors: null
 			}
 		},
         
