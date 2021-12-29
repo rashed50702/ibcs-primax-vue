@@ -14,7 +14,7 @@
         <div class="row">
           <div class="col-sm-4">
             <div>
-              <h5>Hello, {{ user.name }}</h5>
+              <h5 id="hello">Hello, {{ user.name }}</h5>
               <span>{{ user.email }}</span>
             </div>
             <hr>
@@ -40,28 +40,30 @@
                   <thead>
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">First</th>
-                      <th scope="col">Last</th>
-                      <th scope="col">Handle</th>
+                      <th scope="col">Order ID</th>
+                      <th scope="col">Order Date</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                      <td>@mdo</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                      <td>@fat</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td colspan="2">Larry the Bird</td>
-                      <td>@twitter</td>
+                    <tr v-for="(order, index) in my_orders" :key="index">
+                      <td class="align-middle">{{index  + 1}}</td>
+                      <td class="align-middle">{{order.id}}</td>
+                      <td class="align-middle">{{order.order_date | moment}}</td>
+                      <td class="align-middle">
+                        <span v-if="order.status == 0" class="text-primary">Pending</span>
+                        <span v-if="order.status == 1" class="text-success">Delivered</span>
+                        <span v-if="order.status == 2" class="text-danger">Cancelled</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <a href="javascript:void(0)" class="btn btn-warning btn-sm mr-5"
+                          @click="showModal(order.id)"
+                          >Show Details</a>
+                        <a href="javascript:void(0)" class="btn btn-danger btn-sm mt-1"
+                          v-if="order.status !=1"
+                          >Edit</a>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -70,24 +72,72 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> <!--End card-->
+
+    <b-modal
+      v-model="show"
+      ref="modal"
+      title="Order Details">
+
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>#</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+          </tr>
+          <tr v-for="(prod, index) in my_products" :key="index">
+            <td class="align-middle">{{index  + 1}}</td>
+            <td class="align-middle">{{prod.product.name}}</td>
+            <td class="align-middle">{{prod.quantity}}</td>
+            <td class="align-middle">{{prod.price}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </b-modal>
   </div>
 </template>
 
 <script>
-import User from "../apis/User";
+import User from "../apis/User"
+import axios from 'axios'
+import config from '@/config'
+import moment from 'moment'
 
 export default {
+  filters: {
+    moment: function (date) {
+      return moment(date).format('ddd,Do MMM YY h:mm:ss a');
+    }
+  },
+
   data() {
     return {
-      user: null
+      user: null,
+      my_orders:[],
+      show: false,
+      my_products: [],
     };
   },
 
   mounted() {
     User.auth().then(response => {
       this.user = response.data;
+      this.myOrders(this.user.id);
     });
+  },
+
+  methods: {
+    async myOrders(id){
+      const response = await axios.get(`${config.apiURL}/api/my-orders/`+id);
+      this.my_orders = response.data;
+    },
+    async showModal(orderid){
+      this.show = true;
+      const response =  await axios.get(`${config.apiURL}/api/order-details/`+orderid);
+      this.my_products = response.data;
+    },
   }
 };
 </script>
